@@ -23,10 +23,6 @@ next-env.d.ts
 # Firebase & Firestore
 .firebase
 firebase-debug.log
-firestore.indexes.json
-firestore.rules
-firestore.*.json
-firebase.json
 functions/node_modules/
 functions/lib/
 functions/dist/
