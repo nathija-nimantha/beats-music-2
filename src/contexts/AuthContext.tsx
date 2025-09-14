@@ -82,18 +82,34 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const signIn = async (email: string, password: string) => {
     let userEmail = email;
-    if (!email.includes('@')) {
-      const { getDocs, collection, query, where } = await import('firebase/firestore');
-      const q = query(collection(db, 'users'), where('username', '==', email));
-      const querySnapshot = await getDocs(q);
-      let foundEmail = null;
-      querySnapshot.forEach((doc) => {
-        foundEmail = doc.data().email;
-      });
-      if (!foundEmail) throw new Error('No user found with that username');
-      userEmail = foundEmail;
+    try {
+      if (!email.includes('@')) {
+        const { getDocs, collection, query, where } = await import('firebase/firestore');
+        const q = query(collection(db, 'users'), where('username', '==', email));
+        const querySnapshot = await getDocs(q);
+        let foundEmail = null;
+        querySnapshot.forEach((doc) => {
+          foundEmail = doc.data().email;
+        });
+        if (!foundEmail) throw new Error('password or username wrong');
+        userEmail = foundEmail;
+      }
+      await signInWithEmailAndPassword(auth, userEmail, password);
+    } catch (err: unknown) {
+      if (
+        typeof err === 'object' &&
+        err !== null &&
+        'code' in err &&
+        [
+          'auth/wrong-password',
+          'auth/user-not-found',
+          'auth/invalid-credential'
+        ].includes((err as { code?: string }).code || '')
+      ) {
+        throw new Error('password or username wrong');
+      }
+      throw err;
     }
-    await signInWithEmailAndPassword(auth, userEmail, password);
   };
 
   const signUp = async (email: string, password: string, username: string) => {
