@@ -21,6 +21,7 @@ build/
 next-env.d.ts
 
 # Firebase & Firestore
+.firebase
 firebase-debug.log
 firestore.indexes.json
 firestore.rules
