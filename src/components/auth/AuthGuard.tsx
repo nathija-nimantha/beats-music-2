@@ -1,32 +1,19 @@
 'use client';
 
 import { useEffect } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, usePathname } from 'next/navigation';
 import { useAuth } from '@/contexts/AuthContext';
 
-interface AuthGuardProps {
-  children: React.ReactNode;
-  requireAuth?: boolean;
-  redirectTo?: string;
-}
-
-export default function AuthGuard({ 
-  children, 
-  requireAuth = true, 
-  redirectTo = '/' 
-}: AuthGuardProps) {
+export default function AuthGuard({ children }: { children: React.ReactNode }) {
   const { user, loading } = useAuth();
   const router = useRouter();
+  const pathname = usePathname();
 
   useEffect(() => {
-    if (!loading) {
-      if (requireAuth && !user) {
-        router.push(redirectTo);
-      } else if (!requireAuth && user) {
-        router.push('/home');
-      }
+    if (!loading && !user && pathname !== '/') {
+      router.replace('/');
     }
-  }, [user, loading, requireAuth, redirectTo, router]);
+  }, [user, loading, pathname, router]);
 
   if (loading) {
     return (
@@ -39,13 +26,9 @@ export default function AuthGuard({
     );
   }
 
-  if (requireAuth && !user) {
-    return null;
+  if (user || pathname === '/') {
+    return <>{children}</>;
   }
 
-  if (!requireAuth && user) {
-    return null;
-  }
-
-  return <>{children}</>;
+  return null;
 }
