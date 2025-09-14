@@ -38,6 +38,7 @@
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "15.5.3",
+    "ignore-loader": "^0.1.2",
     "tailwindcss": "^4.1.13",
     "typescript": "^5",
     "webpack": "^5.101.3"

@@ -12,16 +12,26 @@ import { Heart, MoreHorizontal } from 'lucide-react';
 import { IoMdRepeat } from 'react-icons/io';
 import { MdOutlineShuffle } from 'react-icons/md';
 import { IoIosSkipBackward, IoIosSkipForward } from 'react-icons/io';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import { songService } from '../../lib/services';
 
-export default function SearchPage() {
+function SearchLoading() {
+  return (
+    <div className="min-h-screen bg-[#070707] text-white flex items-center justify-center">
+      <div className="flex flex-col items-center space-y-4">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-cyan-400"></div>
+        <p className="text-lg text-gray-300">Loading search...</p>
+      </div>
+    </div>
+  );
+}
+
+function SearchContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const initialQuery = searchParams?.get('query') || '';
   const [searchTerm, setSearchTerm] = useState(initialQuery);
 
-  // Sync searchTerm with query param on navigation
   useEffect(() => {
     setSearchTerm(initialQuery);
   }, [initialQuery]);
@@ -50,11 +60,9 @@ export default function SearchPage() {
     cover: string;
   };
 
-
   useEffect(() => {
     async function fetchSongs() {
       try {
-
         const allResult = await songService.getAllSongs();
         const allMapped = allResult.songs.map((song: DbSong) => ({
           id: typeof song.id === 'string' ? song.id : String(song.id),
@@ -64,7 +72,6 @@ export default function SearchPage() {
           cover: song.coverImageURL || song.cover || '/images/music_vibe.png',
         }));
         setAllSongs(allMapped);
-
 
         const releases = await songService.getNewReleases(7);
         const releasesMapped = releases.map((song: DbSong) => ({
@@ -76,9 +83,7 @@ export default function SearchPage() {
         }));
         setNewReleases(releasesMapped);
 
-
         setTopGlobalSongs(allMapped.slice(0, 7));
-
 
         if (user) {
           const likedSongsData = await userService.getLikedSongs(user.id);
@@ -126,7 +131,6 @@ export default function SearchPage() {
     }
   };
 
-
   const handlePlayPause = () => {
     if (!currentSong) return;
     if (isPlaying) {
@@ -171,7 +175,6 @@ export default function SearchPage() {
       if (dbSong) playSong(dbSong, [dbSong]);
     }
   };
-
 
   const handlePlaySong = async (song: Song) => {
     const dbSong = await songService.getSongById(song.id);
@@ -452,5 +455,14 @@ export default function SearchPage() {
         </div>
       </main>
     </div>
+  );
+}
+
+// Main export with Suspense wrapper
+export default function SearchPage() {
+  return (
+    <Suspense fallback={<SearchLoading />}>
+      <SearchContent />
+    </Suspense>
   );
 }
