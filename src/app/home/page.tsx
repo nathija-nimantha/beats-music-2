@@ -153,7 +153,7 @@ export default function HomePage() {
                 placeholder="Search something ..."
                 value={searchTerm}
                 onChange={e => setSearchTerm(e.target.value)}
-                className="w-full bg-[#181818] text-white px-4 py-2 md:px-6 md:py-3 rounded-full border border-gray-800 focus:outline-none focus:border-cyan-400 text-base md:text-lg pr-10 md:pr-12"
+                className="w-full bg-[#181818] text-white px-4 py-2 md:px-6 md:py-3 rounded-full border border-black focus:outline-none focus:border-cyan-400 text-base md:text-lg pr-10 md:pr-12"
               />
               <button
                 type="button"
@@ -183,7 +183,7 @@ export default function HomePage() {
             </p>
             <div className="mt-2 md:mt-4 w-full flex justify-center md:justify-start">
               <div className="relative w-full max-w-xs md:max-w-lg">
-                <input type="text" placeholder="Search something ..." className="w-full bg-[#181818] text-white px-3 md:px-6 py-2 md:py-3 rounded-full border border-gray-800 focus:outline-none focus:border-cyan-400 text-sm md:text-lg pr-8 md:pr-12" />
+                <input type="text" placeholder="Search something ..." className="placeholder-white w-full text-white px-3 md:px-6 py-2 md:py-3 rounded-full focus:outline-none text-sm md:text-lg pr-8 md:pr-12" />
                 <span className="absolute right-2 md:right-4 top-1/2 transform -translate-y-1/2">
                   <Image src="/images/icons/music_icon.png" alt="Music Icon" width={20} height={20} className="h-4 md:h-6 w-4 md:w-6" />
                 </span>
