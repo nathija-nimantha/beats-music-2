@@ -16,9 +16,14 @@ interface WebpackConfig {
 }
 
 const nextConfig: NextConfig = {
+  output: 'export',
+  trailingSlash: true,
+  
   reactStrictMode: true,
   swcMinify: true,
+  
   images: {
+    unoptimized: true,
     domains: [
       'firebasestorage.googleapis.com',
       'via.placeholder.com',
@@ -28,6 +33,7 @@ const nextConfig: NextConfig = {
     ],
     formats: ['image/webp', 'image/avif'],
   },
+  
   async headers() {
     return [
       {
@@ -58,6 +64,7 @@ const nextConfig: NextConfig = {
       },
     ];
   },
+  
   webpack: (config: unknown, { isServer }: { isServer: boolean }) => {
     const webpackConfig = config as WebpackConfig;
     webpackConfig.module.rules.push({
@@ -73,9 +80,11 @@ const nextConfig: NextConfig = {
 
     return webpackConfig;
   },
+  
   env: {
     CUSTOM_KEY: 'beats-music',
   },
+  
   async redirects() {
     return [
       {
