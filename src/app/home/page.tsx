@@ -144,7 +144,7 @@ export default function HomePage() {
         {/* Header */}
         <header className="flex flex-col md:flex-row items-center justify-between px-2 md:px-8 py-2 md:py-6 w-full gap-2 md:gap-0">
           <div className="flex items-center mb-2 md:mb-0">
-            <Image src="/images/beats_music.png" alt="Beats Music" width={40} height={40} className="h-10 w-auto object-contain" />
+            <img src="/images/beats_music.png" alt="Beats Music" width={40} height={40} className="h-10 md:h-14 w-auto object-contain" />
           </div>
           <div className="flex-1 flex justify-center w-full md:w-auto">
             <form className="relative w-full max-w-xs md:max-w-xl" onSubmit={handleSearchSubmit}>
